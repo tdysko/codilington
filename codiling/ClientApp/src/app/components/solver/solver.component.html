@@ -8,7 +8,7 @@
     <p>
       <select id="language" [(ngModel)]="submission.Language">
         <option *ngFor="let language of languages" [ngValue]="language.Id" id="{{language.Id}}">
-          {{language.Language1}}
+          {{language.Name}}
         </option>
       </select>
     <p><label for="coderName">Select task</label></p>

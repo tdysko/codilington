@@ -1,19 +1,18 @@
-import { Component } from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
 import { EnumToArrayPipe } from '../../pipes/enumToArray';
 import { codingChallenge, submission } from '../../models/Submissions';
 import { SubmissionService } from '../../services/submission.service';
 import { CodingChallengesService } from '../../services/coding-challenges.service';
 import { LanguagesService } from '../../services/languages.service';
 import { Language } from '../../models/Languages';
-import { forkJoin } from 'rxjs';
-import { map, takeUntil, delay, tap } from 'rxjs/operators';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-solver-component',
   providers: [EnumToArrayPipe],
   templateUrl: './solver.component.html'
 })
-export class SolverComponent {
+export class SolverComponent implements OnDestroy {
 
   submission: submission = {
     Name: '',
@@ -23,21 +22,20 @@ export class SolverComponent {
   };
   codingChallenges: codingChallenge[];
   languages: Language[];
-
-  private destroyed$: any;
+  subscriptions: Subscription[] = [];
 
   constructor(
     private submissionsService: SubmissionService,
     private codingChallengesService: CodingChallengesService,
     private languagesService: LanguagesService) {
 
-    this.codingChallengesService.get().subscribe(result => {
+    this.subscriptions.push(this.codingChallengesService.get().subscribe(result => {
       this.codingChallenges = result;
-    }, error => console.error(error));
+    }, error => console.error(error)));
 
-    this.languagesService.get().subscribe(result => {
+    this.subscriptions.push(this.languagesService.get().subscribe(result => {
       this.languages = result;
-    }, error => console.error(error));
+    }, error => console.error(error)));
   }
 
   isFormValid() {
@@ -54,8 +52,7 @@ export class SolverComponent {
     }
   }
 
-  onDestroy() {
-    this.destroyed$.next(true);
-    this.destroyed$.complete();
+  ngOnDestroy() {
+    this.subscriptions.forEach(subscription => subscription.unsubscribe());
   }
 }
