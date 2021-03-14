@@ -23,7 +23,7 @@ namespace codiling
             {
                 Console.Write(i);
                 Language language = new Language();
-                language.Language1 = languagesArray[i].Split("=")[0].TrimStart().TrimEnd();
+                language.Name = languagesArray[i].Split("=")[0].TrimStart().TrimEnd();
                 language.Id = Convert.ToInt32(languagesArray[i].Split("=")[1].TrimStart().TrimEnd());
                 langs.Add(language);
 

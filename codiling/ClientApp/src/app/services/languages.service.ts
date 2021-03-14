@@ -1,16 +1,15 @@
 import { Injectable, Inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { submissionResult } from '../models/submissionResults';
 import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
-export class TopService {
+export class LanguagesService {
 
   constructor(@Inject('environment') private environment: any, private http: HttpClient) { }
 
-  get(): Observable<submissionResult[]> {
-    return this.http.get<submissionResult[]>(this.environment.baseUrl + 'api/SubmissionResults');
+  get(): Observable<any> {
+    return this.http.get<any>(this.environment.baseUrl + 'api/Languages');
   }
 }

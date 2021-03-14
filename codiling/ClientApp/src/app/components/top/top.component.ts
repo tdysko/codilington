@@ -9,9 +9,11 @@ import { TopService } from '../../services/top.service';
 export class TopComponent {
   public usersSubmissionsSummaries: any;
 
-  constructor(http: HttpClient, @Inject('BASE_URL') baseUrl: string) {
-    http.get<any>(baseUrl + 'api/Submissions').subscribe(result => {
+  constructor(private topservice: TopService) {
+    console.log('top component');
+    this.topservice.get().subscribe(result => {
       this.usersSubmissionsSummaries = result;
+      console.log(this.usersSubmissionsSummaries);
     }, error => console.error(error));
   }
 }

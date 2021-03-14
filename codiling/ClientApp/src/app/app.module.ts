@@ -10,6 +10,7 @@ import { HomeComponent } from './home/home.component';
 import { SolverComponent } from './components/solver/solver.component';
 import { TopComponent } from './components/top/top.component';
 import { EnumToArrayPipe } from './pipes/enumToArray';
+import { environment } from '../environments/environment.prod';
 
 @NgModule({
   declarations: [
@@ -30,7 +31,7 @@ import { EnumToArrayPipe } from './pipes/enumToArray';
       { path: 'top', component: TopComponent },
     ])
   ],
-  providers: [EnumToArrayPipe],
+  providers: [{ provide: 'environment', useValue: environment }],
   bootstrap: [AppComponent],
   exports: [EnumToArrayPipe]
 })

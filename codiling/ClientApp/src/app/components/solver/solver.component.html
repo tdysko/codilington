@@ -3,28 +3,29 @@
 <div style="width: 100%; padding-top: 2%">
   <div style="width: 40%; display: inline-block; position: relative; top: 0">
     <p><label class="col-xs-6" for="coderName">Name</label></p>
-    <p><input id="coderName" type="text" [(ngModel)]="submission.Name" value="{{submission.Name}}"></p>
+    <p><input id="coderName" type="text" [(ngModel)]="submission.Name" value="{{submission.name}}"></p>
     <p><label for="coderName">Select language</label></p>
     <p>
-      <select id="language">
-        <option *ngFor="let language of languages" id="{{language.Id}}">
-          {{ language.Language1 }}
+      <select id="language" [(ngModel)]="submission.Language">
+        <option *ngFor="let language of languages" [ngValue]="language.Id" id="{{language.Id}}">
+          {{language.Language1}}
         </option>
       </select>
     <p><label for="coderName">Select task</label></p>
     <p>
       <select id="codeChallenges" [(ngModel)]="submission.IdCodingChallenges">
         <option *ngFor="let codingChallenge of codingChallenges" [ngValue]="codingChallenge.id" id="{{codingChallenge.id}}">
-          {{ codingChallenge.name }}
+          {{codingChallenge.name}}
         </option>
       </select>
     </p>
     <p><label for="description">DESCRIPTION</label></p>
-    <p></p>
+    <p *ngIf="submission.IdCodingChallenges - 1 >= 0">{{codingChallenges[submission.IdCodingChallenges - 1].description}}</p>
   </div>
   <div style="width: 50%; display: inline-block; margin-left: 2%; position: relative; top: 0; float: right">
     <p><label for="language">SOLUTION CODE</label></p>
-    <p><input id="language" type="text" style="height: 20em; width: 30em" [(ngModel)]="submission.Solution" value="{{submission.Solution}}"></p>
+    <p><textarea style="height: 20em; width: 30em"[(ngModel)]="submission.Solution">{{submission.Solution}}</textarea>
+    </p>
     <button class="btn btn-primary" (click)="submit()">Submit solution</button>
   </div>
 </div>

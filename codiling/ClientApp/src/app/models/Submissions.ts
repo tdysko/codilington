@@ -2,9 +2,10 @@ export interface submission {
   Name: string;
   Solution: string;
   IdCodingChallenges: number;
+  Language: number;
 }
 
 export interface codingChallenge {
-  ID: number;
-  Name: string;
+  id: number;
+  name: string;
 }

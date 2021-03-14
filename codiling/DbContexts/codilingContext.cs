@@ -49,12 +49,13 @@ namespace codiling.Contexts
 
             modelBuilder.Entity<Language>(entity =>
             {
-                entity.Property(e => e.Id).HasColumnName("ID");
+                entity.Property(e => e.Id)
+                    .ValueGeneratedNever()
+                    .HasColumnName("ID");
 
-                entity.Property(e => e.Language1)
+                entity.Property(e => e.Name)
                     .IsRequired()
-                    .HasMaxLength(50)
-                    .HasColumnName("Language");
+                    .HasMaxLength(50);
             });
 
             modelBuilder.Entity<Submission>(entity =>
@@ -80,19 +81,11 @@ namespace codiling.Contexts
             {
                 entity.HasNoKey();
 
-                entity.Property(e => e.IdSubmission).HasColumnName("ID_Submission");
-
-                entity.Property(e => e.Result).HasColumnType("decimal(18, 3)");
+                entity.Property(e => e.Tasks).IsRequired();
 
                 entity.Property(e => e.UserName)
                     .IsRequired()
                     .HasMaxLength(150);
-
-                entity.HasOne(d => d.IdSubmissionNavigation)
-                    .WithMany()
-                    .HasForeignKey(d => d.IdSubmission)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_SubmissionResults_Submissions");
             });
 
             OnModelCreatingPartial(modelBuilder);
