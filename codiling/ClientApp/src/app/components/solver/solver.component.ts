@@ -1,9 +1,11 @@
 import { Component, Inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { EnumToArrayPipe } from '../../pipes/enumToArray';
 import { codingChallenge, submission } from '../../models/Submissions';
 
 @Component({
   selector: 'app-solver-component',
+  providers: [EnumToArrayPipe],
   templateUrl: './solver.component.html'
 })
 export class SolverComponent {
@@ -14,11 +16,17 @@ export class SolverComponent {
     IdCodingChallenges: 0
   };
   codingChallenges: codingChallenge[];
+  languages: any;
 
   constructor(private http: HttpClient, @Inject('BASE_URL') private baseUrl: string) {
     this.http.get<codingChallenge[]>(this.baseUrl + 'api/CodingChallenges').subscribe(result => {
       console.log(result);
       this.codingChallenges = result;
+    }, error => console.error(error));
+
+    this.http.get<any>(this.baseUrl + 'api/Languages').subscribe(result => {
+      console.log(result);
+      this.languages = result;
     }, error => console.error(error));
   }
 

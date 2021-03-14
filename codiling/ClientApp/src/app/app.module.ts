@@ -9,6 +9,7 @@ import { NavMenuComponent } from './nav-menu/nav-menu.component';
 import { HomeComponent } from './home/home.component';
 import { SolverComponent } from './components/solver/solver.component';
 import { TopComponent } from './components/top/top.component';
+import { EnumToArrayPipe } from './pipes/enumToArray';
 
 @NgModule({
   declarations: [
@@ -16,7 +17,8 @@ import { TopComponent } from './components/top/top.component';
     NavMenuComponent,
     HomeComponent,
     SolverComponent,
-    TopComponent
+    TopComponent,
+    EnumToArrayPipe
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
@@ -28,7 +30,8 @@ import { TopComponent } from './components/top/top.component';
       { path: 'top', component: TopComponent },
     ])
   ],
-  providers: [],
-  bootstrap: [AppComponent]
+  providers: [EnumToArrayPipe],
+  bootstrap: [AppComponent],
+  exports: [EnumToArrayPipe]
 })
 export class AppModule { }

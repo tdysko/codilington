@@ -19,6 +19,7 @@ namespace codiling.Contexts
         }
 
         public virtual DbSet<CodingChallenge> CodingChallenges { get; set; }
+        public virtual DbSet<Language> Languages { get; set; }
         public virtual DbSet<Submission> Submissions { get; set; }
         public virtual DbSet<SubmissionResult> SubmissionResults { get; set; }
 
@@ -39,12 +40,21 @@ namespace codiling.Contexts
             {
                 entity.Property(e => e.Id).HasColumnName("ID");
 
+                entity.Property(e => e.Description).IsRequired();
+
                 entity.Property(e => e.Name)
                     .IsRequired()
                     .HasMaxLength(100);
+            });
 
-                entity.Property(e => e.Description)
-                    .IsRequired();
+            modelBuilder.Entity<Language>(entity =>
+            {
+                entity.Property(e => e.Id).HasColumnName("ID");
+
+                entity.Property(e => e.Language1)
+                    .IsRequired()
+                    .HasMaxLength(50)
+                    .HasColumnName("Language");
             });
 
             modelBuilder.Entity<Submission>(entity =>
