@@ -1,0 +1,21 @@
+<h1 id="tableLabel">Top 3</h1>
+
+
+<p *ngIf="!usersSubmissionsSummaries"><em>Loading...</em></p>
+
+<table class='table table-striped' aria-labelledby="tableLabel" *ngIf="usersSubmissionsSummaries">
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Succesfull Solutions</th>
+      <th>Tasks</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let submissionsSummary of usersSubmissionsSummaries">
+      <td>{{ submissionsSummary.Name }}</td>
+      <td>{{ submissionsSummary.Solution }}</td>
+      <td>{{ submissionsSummary.IdCodingChallengesNavigation.Name }}</td>
+    </tr>
+  </tbody>
+</table>

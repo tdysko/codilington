@@ -1,0 +1,16 @@
+<h1>Solve</h1>
+
+<p><label class="col-xs-6" for="coderName">Name</label></p>
+<p><input id="coderName" type="text" [(ngModel)]="submission.Name" value="{{submission.Name}}"></p>
+<p><label for="coderName">Select task</label></p>
+<p><select id="codeChallenges" [(ngModel)]="submission.IdCodingChallenges">
+     <option *ngFor="let codingChallenge of codingChallenges" [ngValue]="codingChallenge.id" id="{{codingChallenge.id}}">
+       {{ codingChallenge.name }}
+     </option>
+</select>
+</p>
+<p><label for="description">DESCRIPTION</label></p>
+<p></p>
+<p><label for="language">SOLUTION CODE</label></p>
+<p><input id="language" type="text" [(ngModel)]="submission.Solution" value="{{submission.Solution}}"></p>
+<button class="btn btn-primary" (click)="submit()">Increment</button>

@@ -1,0 +1,93 @@
+﻿using System;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata;
+using codiling.Models;
+
+#nullable disable
+
+namespace codiling.Contexts
+{
+    public partial class codilingContext : DbContext
+    {
+        public codilingContext()
+        {
+        }
+
+        public codilingContext(DbContextOptions<codilingContext> options)
+            : base(options)
+        {
+        }
+
+        public virtual DbSet<CodingChallenge> CodingChallenges { get; set; }
+        public virtual DbSet<Submission> Submissions { get; set; }
+        public virtual DbSet<SubmissionResult> SubmissionResults { get; set; }
+
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            if (!optionsBuilder.IsConfigured)
+            {
+#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
+                optionsBuilder.UseSqlServer("Server=.\\SQLEXPRESS;Database=codiling;Trusted_Connection=True;");
+            }
+        }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.HasAnnotation("Relational:Collation", "SQL_Latin1_General_CP1_CI_AS");
+
+            modelBuilder.Entity<CodingChallenge>(entity =>
+            {
+                entity.Property(e => e.Id).HasColumnName("ID");
+
+                entity.Property(e => e.Name)
+                    .IsRequired()
+                    .HasMaxLength(100);
+
+                entity.Property(e => e.Description)
+                    .IsRequired();
+            });
+
+            modelBuilder.Entity<Submission>(entity =>
+            {
+                entity.Property(e => e.Id).HasColumnName("ID");
+
+                entity.Property(e => e.IdCodingChallenges).HasColumnName("ID_CodingChallenges");
+
+                entity.Property(e => e.Name)
+                    .IsRequired()
+                    .HasMaxLength(150);
+
+                entity.Property(e => e.Solution).IsRequired();
+
+                entity.HasOne(d => d.IdCodingChallengesNavigation)
+                    .WithMany(p => p.Submissions)
+                    .HasForeignKey(d => d.IdCodingChallenges)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_Submissions_CodingChallenges");
+            });
+
+            modelBuilder.Entity<SubmissionResult>(entity =>
+            {
+                entity.HasNoKey();
+
+                entity.Property(e => e.IdSubmission).HasColumnName("ID_Submission");
+
+                entity.Property(e => e.Result).HasColumnType("decimal(18, 3)");
+
+                entity.Property(e => e.UserName)
+                    .IsRequired()
+                    .HasMaxLength(150);
+
+                entity.HasOne(d => d.IdSubmissionNavigation)
+                    .WithMany()
+                    .HasForeignKey(d => d.IdSubmission)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_SubmissionResults_Submissions");
+            });
+
+            OnModelCreatingPartial(modelBuilder);
+        }
+
+        partial void OnModelCreatingPartial(ModelBuilder modelBuilder);
+    }
+}
